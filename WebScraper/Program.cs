@@ -1,5 +1,7 @@
-﻿using ScrapySharp.Network;
+﻿using ScrapySharp.Extensions;
+using ScrapySharp.Network;
 using System;
+using System.Linq;
 
 namespace WebScraper
 {
@@ -18,7 +20,16 @@ namespace WebScraper
 
             WebPage homePage = browser.NavigateToPage(new Uri("https://www.cvonline.lt/lt/search?limit=20&offset=0&categories%5B0%5D=INFORMATION_TECHNOLOGY&isHourlySalary=false&isRemoteWork=false"));
 
+            var html = homePage.Html;
 
+            var nodes = html.CssSelect(".vacancy-item__content a .vacancy-item__title");
+
+            var professionNames = nodes.Select(n => n.InnerText);
+
+            foreach (var name in professionNames)
+            {
+                Console.WriteLine(name);
+            }
         }
     }
 }
